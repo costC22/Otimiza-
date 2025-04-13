@@ -1,7 +1,11 @@
+'use client'
+
 import type {Metadata} from 'next';
 import {Geist, Geist_Mono} from 'next/font/google';
 import './globals.css';
 import {Sidebar, SidebarContent, SidebarMenu, SidebarMenuItem, SidebarProvider} from "@/components/ui/sidebar";
+import {useEffect, useState} from "react";
+import ClientLayout from "@/components/ClientLayout";
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -23,6 +27,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   return (
     <html lang="pt-BR">
@@ -52,10 +62,10 @@ export default function RootLayout({
               </a>
             </SidebarMenuItem>
           </SidebarMenu>
-          {/*Moved to ClientLayout*/}
+          <ClientLayout/>
         </SidebarContent>
       </Sidebar>
-      <main className="main-content">
+      <main className="main-content" style={{ marginLeft: '200px', padding: '20px' }}>
         {children}
       </main>
     </SidebarProvider>
@@ -63,4 +73,3 @@ export default function RootLayout({
     </html>
   );
 }
-

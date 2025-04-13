@@ -1,3 +1,4 @@
+/* src/app/globals.css */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -87,8 +88,32 @@ body {
   }
 }
 
-/* Adjust main content to accommodate sidebar */
-.main-content {
-  margin-left: 200px; /* Adjust based on sidebar width */
-  padding: 20px;
+/* Ensure smooth transitions and better box-sizing */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* Improve scrolling behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Modernize form elements */
+input, textarea, select, button {
+  appearance: none;
+  background-color: transparent;
+  border-radius: 0;
+}
+
+/* Add focus styles for accessibility */
+:focus {
+  outline: 2px solid hsl(var(--accent));
+  outline-offset: 2px;
+}
+
+/* Improve text rendering */
+body {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }

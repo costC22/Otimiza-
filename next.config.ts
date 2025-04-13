@@ -8,6 +8,16 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  
+  // Ensure that all routes are correctly handled.
+  async rewrites() {
+    return [
+      {
+        source: '/:path*',
+        destination: '/:path*',
+      },
+    ];
+  },
 };
 
 export default nextConfig;
