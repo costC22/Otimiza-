@@ -1,7 +1,7 @@
 'use client';
 
-import os from 'os';
-import {useEffect, useState} from "react";
+import { useEffect, useState } from 'react';
+import { useTauri } from "@/hooks/use-tauri";
 
 const ClientLayout = () => {
   const [systemInfo, setSystemInfo] = useState({
@@ -10,26 +10,29 @@ const ClientLayout = () => {
     memory: 'N/A'
   });
 
+  const tauri = useTauri();
+
   useEffect(() => {
     const getSystemInfo = async () => {
       try {
-        const osInfo = os;
-        const cpuInfo = osInfo.cpus();
-        const totalMemory = osInfo.totalmem();
-        const totalMemoryGB = (totalMemory / (1024 * 1024 * 1024)).toFixed(2);
+        if (tauri) {
+          const osInfo = await tauri.os.platform();
+          const cpuInfo = await tauri.os.version();
+          const totalMemory = await tauri.os.type();
 
-        setSystemInfo({
-          os: osInfo.platform(),
-          cpu: cpuInfo.length > 0 ? cpuInfo[0].model : 'N/A',
-          memory: `${totalMemoryGB} GB`
-        });
+          setSystemInfo({
+            os: osInfo || 'N/A',
+            cpu: cpuInfo || 'N/A',
+            memory: totalMemory || 'N/A'
+          });
+        }
       } catch (error) {
         console.error("Failed to fetch system info:", error);
       }
     };
 
     getSystemInfo();
-  }, []);
+  }, [tauri]);
 
   return (
     <div className="mt-4 p-2 border-t border-gray-700">

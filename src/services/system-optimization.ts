@@ -1,33 +1,28 @@
 'use server';
 
-import os from 'os';
-import { promisify } from 'util';
-import { exec } from 'child_process';
-import fs from 'fs';
-import path from 'path';
-
-const execPromise = promisify(exec);
-const fsPromises = fs.promises;
+import { invoke } from '@tauri-apps/api/tauri';
 
 export async function runOptimization(): Promise<string> {
   try {
     // Clear temporary files
-    const tempDir = os.tmpdir();
-    const files = await fsPromises.readdir(tempDir);
-
-    for (const file of files) {
-      const filePath = path.join(tempDir, file);
-      try {
-        await fsPromises.unlink(filePath);
-      } catch (e: any) {
-        console.error(`Failed to delete ${filePath}:`, e);
-      }
-    }
+    const clearTempResult = await invoke<string>('clear_temp_files');
+    console.log('clearTempResult', clearTempResult);
 
     // Flush DNS cache
-    await execPromise('ipconfig /flushdns');
+    const flushDnsResult = await invoke<string>('flush_dns');
+    console.log('flushDnsResult', flushDnsResult);
 
-    return 'Sistema otimizado: Arquivos temporários limpos e cache DNS liberado.';
+    const optimizeMemoryResult = await invoke<string>('optimize_memory');
+    console.log('optimizeMemoryResult', optimizeMemoryResult);
+
+    const diskCleanupResult = await invoke<string>('disk_cleanup');
+    console.log('diskCleanupResult', diskCleanupResult);
+
+    return `Sistema otimizado:
+            ${clearTempResult}
+            ${flushDnsResult}
+            ${optimizeMemoryResult}
+            ${diskCleanupResult}`;
   } catch (error: any) {
     console.error('Erro durante a otimização do sistema:', error);
     throw new Error(error.message || 'A otimização do sistema falhou.');
