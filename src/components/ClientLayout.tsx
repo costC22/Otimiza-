@@ -1,39 +1,27 @@
-'use client'
+'use server';
 
-import {useEffect, useState} from "react";
+import os from 'os';
 
-const ClientLayout = () => {
-  const [systemInfo, setSystemInfo] = useState({
-    os: '',
-    cpu: '',
-    memory: ''
-  });
+const ClientLayout = async () => {
+  let systemInfo = {
+    os: 'N/A',
+    cpu: 'N/A',
+    memory: 'N/A'
+  };
 
-  useEffect(() => {
-    async function getSystemInfo() {
-      try {
-        const osInfo = await import('os');
-        const cpuInfo = osInfo.cpus()[0].model;
-        const totalMemory = osInfo.totalmem();
-        const totalMemoryGB = (totalMemory / (1024 * 1024 * 1024)).toFixed(2);
+  try {
+    const cpuInfo = os.cpus();
+    const totalMemory = os.totalmem();
+    const totalMemoryGB = (totalMemory / (1024 * 1024 * 1024)).toFixed(2);
 
-        setSystemInfo({
-          os: osInfo.platform(),
-          cpu: cpuInfo,
-          memory: `${totalMemoryGB} GB`
-        });
-      } catch (error) {
-        console.error("Failed to fetch system info:", error);
-        setSystemInfo({
-          os: 'N/A',
-          cpu: 'N/A',
-          memory: 'N/A'
-        });
-      }
-    }
-
-    getSystemInfo();
-  }, []);
+    systemInfo = {
+      os: os.platform(),
+      cpu: cpuInfo.length > 0 ? cpuInfo[0].model : 'N/A',
+      memory: `${totalMemoryGB} GB`
+    };
+  } catch (error) {
+    console.error("Failed to fetch system info:", error);
+  }
 
   return (
     <div className="mt-4 p-2 border-t border-gray-700">
