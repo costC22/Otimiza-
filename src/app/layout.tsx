@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'OptiKing - System Optimizer',
+  title: 'Otimiza+ - System Optimizer',
   description: 'Optimize your system for peak performance.',
 };
 
@@ -31,4 +31,3 @@ export default function RootLayout({
     </html>
   );
 }
-
