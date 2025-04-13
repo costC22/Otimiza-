@@ -1,7 +1,7 @@
 'use server';
 
 import os from 'os';
-import glob from 'glob';
+import {glob} from 'glob';
 import {promisify} from 'util';
 import {exec} from 'child_process';
 
@@ -24,3 +24,4 @@ export async function analyzeSystem(): Promise<string> {
     throw new Error(error.message || 'Failed to analyze system.');
   }
 }
+
