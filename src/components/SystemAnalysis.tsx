@@ -1,10 +1,10 @@
 'use client';
 
 import {Button} from "@/components/ui/button";
-import {analyzeSystem} from "@/services/system-analysis";
 import {toast} from "@/hooks/use-toast";
 import {useTransition} from "react";
 import {useState} from "react";
+import {getSystemAnalysisRecommendation} from "@/ai/flows/system-analysis-recommendation-flow";
 
 const SystemAnalysis = () => {
   const [isPending, startTransition] = useTransition();
@@ -14,12 +14,12 @@ const SystemAnalysis = () => {
   const handleSystemScan = () => {
     startTransition(async () => {
       try {
-        const analysisResults = await analyzeSystem();
-        setAnalysisResult(analysisResults);
+        const recommendation = await getSystemAnalysisRecommendation();
+        setAnalysisResult(recommendation.recommendation);
         setAnalysisError(null);
         toast({
           title: "Análise do Sistema Concluída",
-          description: analysisResults,
+          description: recommendation.recommendation,
         });
       } catch (error: any) {
         console.error("System analysis error:", error);
@@ -46,7 +46,7 @@ const SystemAnalysis = () => {
 
       {analysisResult && (
         <div className="text-green-500">
-          Resultado: {analysisResult}
+          Recomendação: {analysisResult}
         </div>
       )}
 
