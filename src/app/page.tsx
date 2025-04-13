@@ -7,17 +7,17 @@ import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
 
 export default function Home() {
   return (
-    <div className="flex flex-col items-center justify-start min-h-screen bg-background py-10 px-4">
-      <h1 className="text-4xl font-bold mb-6 text-primary">Otimiza+</h1>
+    <div className="container mx-auto py-8">
+      <h1 className="text-2xl font-bold text-primary mb-4">Otimiza+</h1>
       <p className="text-muted-foreground mb-8">Otimize seu sistema para obter o máximo de desempenho.</p>
 
-      <Tabs defaultValue="analysis" className="w-full max-w-3xl">
+      <Tabs defaultValue="analysis" className="w-full">
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="analysis">Análise do Sistema</TabsTrigger>
           <TabsTrigger value="recommendations">Recomendações</TabsTrigger>
           <TabsTrigger value="optimization">Otimização Automática</TabsTrigger>
         </TabsList>
-        <TabsContent value="analysis" className="mt-6">
+        <TabsContent value="analysis" className="mt-2">
           <Card>
             <CardHeader>
               <CardTitle>Análise do Sistema</CardTitle>
@@ -28,7 +28,7 @@ export default function Home() {
             </CardContent>
           </Card>
         </TabsContent>
-        <TabsContent value="recommendations" className="mt-6">
+        <TabsContent value="recommendations" className="mt-2">
           <Card>
             <CardHeader>
               <CardTitle>Recomendações de Otimização</CardTitle>
@@ -39,7 +39,7 @@ export default function Home() {
             </CardContent>
           </Card>
         </TabsContent>
-        <TabsContent value="optimization" className="mt-6">
+        <TabsContent value="optimization" className="mt-2">
           <Card>
             <CardHeader>
               <CardTitle>Otimização Automatizada</CardTitle>

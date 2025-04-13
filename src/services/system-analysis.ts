@@ -1,9 +1,9 @@
 'use server';
 
 import os from 'os';
-import {glob} from 'glob';
-import {promisify} from 'util';
-import {exec} from 'child_process';
+import { promisify } from 'util';
+import { exec } from 'child_process';
+import { glob } from 'glob';
 
 const globPromise = promisify(glob);
 const execPromise = promisify(exec);
@@ -15,14 +15,12 @@ export async function analyzeSystem(): Promise<string> {
     const processInfo = await execPromise('tasklist');
 
     return `
-      System Analysis Results:
-      - Number of temporary files: ${tempFiles.length}
-      - Running processes: ${processInfo.stdout.split('\\r\\n').length - 2}
+      Resultados da Análise do Sistema:
+      - Número de arquivos temporários: ${tempFiles.length}
+      - Processos em execução: ${processInfo.stdout.split('\\r\\n').length - 2}
     `;
   } catch (error: any) {
-    console.error('Error during system analysis:', error);
-    throw new Error(error.message || 'Failed to analyze system.');
+    console.error('Erro durante a análise do sistema:', error);
+    throw new Error(error.message || 'Falha ao analisar o sistema.');
   }
 }
-
-

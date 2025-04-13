@@ -1,10 +1,9 @@
-
 'use client';
 
 import {Button} from "@/components/ui/button";
 import {toast} from "@/hooks/use-toast";
-import {RunSystemOptimizationInput, runSystemOptimization} from "@/ai/flows/system-optimization-flow";
-import {useTransition} from "react";
+import {runOptimization} from "@/services/system-optimization";
+import {useState, useTransition} from "react";
 
 const AutomatedOptimization = () => {
   const [isPending, startTransition] = useTransition();
@@ -12,11 +11,10 @@ const AutomatedOptimization = () => {
   const handleOptimization = async () => {
     startTransition(async () => {
       try {
-        const optimizationInput: RunSystemOptimizationInput = {optimizationType: 'tempFiles'};
-        const result = await runSystemOptimization(optimizationInput);
+        const result = await runOptimization();
         toast({
           title: "Otimização Concluída",
-          description: result.result,
+          description: result,
         });
       } catch (error: any) {
         toast({

@@ -1,8 +1,8 @@
 'use server';
 
 import os from 'os';
-import {promisify} from 'util';
-import {exec} from 'child_process';
+import { promisify } from 'util';
+import { exec } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 
@@ -27,9 +27,9 @@ export async function runOptimization(): Promise<string> {
     // Flush DNS cache
     await execPromise('ipconfig /flushdns');
 
-    return 'System optimized: Temporary files cleared and DNS cache flushed.';
+    return 'Sistema otimizado: Arquivos temporários limpos e cache DNS liberado.';
   } catch (error: any) {
-    console.error('Error during system optimization:', error);
-    throw new Error(error.message || 'System optimization failed.');
+    console.error('Erro durante a otimização do sistema:', error);
+    throw new Error(error.message || 'A otimização do sistema falhou.');
   }
 }
