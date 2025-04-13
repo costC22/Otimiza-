@@ -1,42 +1,21 @@
-'use client'
+'use client';
 
-import type {Metadata} from 'next';
-import {Geist, Geist_Mono} from 'next/font/google';
 import './globals.css';
 import {Sidebar, SidebarContent, SidebarMenu, SidebarMenuItem, SidebarProvider} from "@/components/ui/sidebar";
-import {useEffect, useState} from "react";
-import ClientLayout from "@/components/ClientLayout";
+import dynamic from 'next/dynamic';
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
+const ClientLayout = dynamic(() => import('@/components/ClientLayout'), {
+  ssr: false,
 });
 
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
-});
-
-export const metadata: Metadata = {
-  title: 'Otimiza+ - System Optimizer',
-  description: 'Optimize your system for peak performance.',
-};
-
-export default function RootLayout({
+const RootLayout = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
-
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
+}>) => {
   return (
     <html lang="pt-BR">
-    <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+    <body>
     <SidebarProvider>
       <Sidebar>
         <SidebarContent>
@@ -73,3 +52,6 @@ export default function RootLayout({
     </html>
   );
 }
+
+export default RootLayout;
+
