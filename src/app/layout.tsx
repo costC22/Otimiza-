@@ -2,11 +2,7 @@
 
 import './globals.css';
 import {Sidebar, SidebarContent, SidebarMenu, SidebarMenuItem, SidebarProvider} from "@/components/ui/sidebar";
-import dynamic from 'next/dynamic';
-
-const ClientLayout = dynamic(() => import('@/components/ClientLayout'), {
-  ssr: false,
-});
+import ClientLayout from "@/components/ClientLayout";
 
 const RootLayout = ({
   children,
@@ -54,4 +50,3 @@ const RootLayout = ({
 }
 
 export default RootLayout;
-
