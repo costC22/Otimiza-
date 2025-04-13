@@ -1,3 +1,4 @@
+
 'use client';
 
 import {Button} from "@/components/ui/button";
@@ -13,13 +14,13 @@ const SystemAnalysis = () => {
       try {
         const analysisResults = await analyzeSystem();
         toast({
-          title: "System Analysis Complete",
+          title: "Análise do Sistema Concluída",
           description: analysisResults,
         });
       } catch (error: any) {
         toast({
-          title: "System Analysis Failed",
-          description: error.message || "Failed to analyze the system.",
+          title: "Falha na Análise do Sistema",
+          description: error.message || "Falha ao analisar o sistema.",
           variant: "destructive",
         });
       }
@@ -29,10 +30,10 @@ const SystemAnalysis = () => {
   return (
     <div className="flex flex-col space-y-4">
       <p className="text-muted-foreground">
-        Scan your system for temporary files, unnecessary processes, and potential performance bottlenecks.
+        Analise seu sistema em busca de arquivos temporários, processos desnecessários e potenciais gargalos de desempenho.
       </p>
       <Button disabled={isPending} onClick={handleSystemScan}>
-        {isPending ? "Scanning..." : "Run System Scan"}
+        {isPending ? "Analisando..." : "Executar Análise do Sistema"}
       </Button>
     </div>
   );

@@ -1,3 +1,4 @@
+
 'use client';
 
 import {Button} from "@/components/ui/button";
@@ -14,13 +15,13 @@ const AutomatedOptimization = () => {
         const optimizationInput: RunSystemOptimizationInput = {optimizationType: 'tempFiles'};
         const result = await runSystemOptimization(optimizationInput);
         toast({
-          title: "Optimization Completed",
+          title: "Otimização Concluída",
           description: result.result,
         });
       } catch (error: any) {
         toast({
-          title: "Optimization Failed",
-          description: error.message || "An error occurred during optimization.",
+          title: "Falha na Otimização",
+          description: error.message || "Ocorreu um erro durante a otimização.",
           variant: "destructive",
         });
       }
@@ -29,9 +30,9 @@ const AutomatedOptimization = () => {
 
   return (
     <div className="flex flex-col space-y-4">
-      <p className="text-muted-foreground">Run automated scripts to clear temporary files, disable unnecessary startup programs, and optimize system settings.</p>
+      <p className="text-muted-foreground">Execute scripts automatizados para limpar arquivos temporários, desativar programas de inicialização desnecessários e otimizar as configurações do sistema.</p>
       <Button disabled={isPending} onClick={handleOptimization}>
-        {isPending ? "Optimizing..." : "Run Automated Optimization"}
+        {isPending ? "Otimizando..." : "Executar Otimização Automática"}
       </Button>
     </div>
   );

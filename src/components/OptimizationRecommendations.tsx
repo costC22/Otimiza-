@@ -1,3 +1,4 @@
+
 'use client';
 
 import {useEffect, useState} from 'react';
@@ -19,10 +20,10 @@ const OptimizationRecommendations = () => {
         if (result && result.recommendations) {
           setRecommendations(result.recommendations);
         } else {
-          setError('No recommendations found.');
+          setError('Nenhuma recomendação encontrada.');
         }
       } catch (e: any) {
-        setError(e.message || 'Failed to fetch recommendations.');
+        setError(e.message || 'Falha ao buscar recomendações.');
       } finally {
         setLoading(false);
       }
@@ -32,14 +33,14 @@ const OptimizationRecommendations = () => {
   }, []);
 
   if (loading) {
-    return <p>Loading recommendations...</p>;
+    return <p>Carregando recomendações...</p>;
   }
 
   if (error) {
     return (
       <Alert variant="destructive">
         <Info className="h-4 w-4"/>
-        <AlertTitle>Error</AlertTitle>
+        <AlertTitle>Erro</AlertTitle>
         <AlertDescription>{error}</AlertDescription>
       </Alert>
     );
@@ -48,7 +49,7 @@ const OptimizationRecommendations = () => {
   return (
     <div className="flex flex-col space-y-4">
       <p className="text-muted-foreground">
-        Based on the system analysis, here are some recommendations to improve performance.
+        Com base na análise do sistema, aqui estão algumas recomendações para melhorar o desempenho.
       </p>
       {recommendations.length > 0 ? (
         <ul>
@@ -57,7 +58,7 @@ const OptimizationRecommendations = () => {
           ))}
         </ul>
       ) : (
-        <p>No recommendations available.</p>
+        <p>Nenhuma recomendação disponível.</p>
       )}
     </div>
   );
