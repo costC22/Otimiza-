@@ -53,7 +53,7 @@ const OptimizationRecommendations = () => {
       {recommendations.length > 0 ? (
         <ul>
           {recommendations.map((recommendation, index) => (
-            <li key={index}>{recommendation}</li>
+            <li key={index} className="py-2">{recommendation}</li>
           ))}
         </ul>
       ) : (
