@@ -18,6 +18,9 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+
+  output: 'export', // Specify that the app should be exported as static HTML
+  distDir: 'out', //  Specify the output directory
 };
 
 export default nextConfig;

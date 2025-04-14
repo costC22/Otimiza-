@@ -4,8 +4,8 @@
     "beforeBuildCommand": "npm run build",
     "beforeDevCommand": "npm run dev",
     "devPath": "http://localhost:9002",
-    "distDir": "../.next",
-    "frontendDist": "../.next"
+    "distDir": "../out",
+    "frontendDist": "../out"
   },
   "package": {
     "productName": "otimiza_plus",
@@ -85,7 +85,10 @@
         "toggleMaximize": true,
         "unmaximize": true,
         "unminimize": true
-      }
+      },
+       "invoke": {
+          "all": true
+        }
     },
     "bundle": {
       "active": true,

@@ -14,6 +14,60 @@ use tauri::{
 use tauri::Manager;
 use tauri::Window;
 use std::process::Command;
+use serde::{Serialize, Deserialize};
+
+#[derive(Debug, Serialize, Deserialize)]
+struct SystemInfo {
+    os_version: String,
+    cpu_info: String,
+    total_memory: String,
+}
+
+#[tauri::command]
+async fn get_system_info() -> Result<SystemInfo, String> {
+  println!("Chamando get_system_info...");
+
+  #[cfg(target_os = "windows")]
+  {
+      let os_version = match Command::new("powershell")
+          .arg("-Command")
+          .arg("Get-WmiObject Win32_OperatingSystem | Select-Object Caption | ForEach-Object {$_.Caption}")
+          .output() {
+          Ok(output) => String::from_utf8_lossy(&output.stdout).trim().to_string(),
+          Err(e) => return Err(format!("Failed to get OS version: {}", e)),
+      };
+
+      let cpu_info = match Command::new("powershell")
+          .arg("-Command")
+          .arg("Get-WmiObject Win32_Processor | Select-Object Name | ForEach-Object {$_.Name}")
+          .output() {
+          Ok(output) => String::from_utf8_lossy(&output.stdout).trim().to_string(),
+          Err(e) => return Err(format!("Failed to get CPU info: {}", e)),
+      };
+
+      let total_memory = match Command::new("powershell")
+          .arg("-Command")
+          .arg("(Get-WmiObject Win32_ComputerSystem).TotalPhysicalMemory")
+          .output() {
+          Ok(output) => {
+              let bytes = String::from_utf8_lossy(&output.stdout).trim().parse::<u64>().unwrap_or(0);
+              let gb = bytes as f64 / (1024.0 * 1024.0 * 1024.0);
+              format!("{:.2} GB", gb)
+          }
+          Err(e) => return Err(format!("Failed to get total memory: {}", e)),
+      };
+
+      Ok(SystemInfo {
+          os_version,
+          cpu_info,
+          total_memory,
+      })
+  }
+  #[cfg(not(target_os = "windows"))]
+  {
+      Err("System info not supported for this operating system.".to_string())
+  }
+}
 
 #[tauri::command]
 async fn optimize_memory() -> Result<String, String> {
@@ -152,7 +206,8 @@ fn main() {
       optimize_memory,
       clear_temp_files,
       flush_dns,
-      disk_cleanup
+      disk_cleanup,
+      get_system_info
     ])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");

@@ -1,10 +1,15 @@
+'use client';
+
 import SystemAnalysis from '@/components/SystemAnalysis';
 import OptimizationRecommendations from '@/components/OptimizationRecommendations';
 import AutomatedOptimization from '@/components/AutomatedOptimization';
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
+  const router = useRouter();
+
   return (
     <div className="flex flex-col items-center justify-start min-h-screen bg-background py-10 px-4">
       <h1 className="text-4xl font-bold mb-6 text-primary">Otimiza+</h1>
@@ -23,7 +28,7 @@ export default function Home() {
               <CardDescription>Verifique seu sistema em busca de possíveis problemas.</CardDescription>
             </CardHeader>
             <CardContent>
-              <SystemAnalysis/>
+              <SystemAnalysis onAnalysisComplete={() => router.push('/recommendations')} />
             </CardContent>
           </Card>
         </TabsContent>
