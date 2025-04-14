@@ -4,6 +4,7 @@ export async function analyzeSystem(): Promise<string> {
   if (typeof window !== 'undefined' && window.__TAURI__) {
     try {
       const { invoke } = await import('@tauri-apps/api');
+
       // Chama o comando Tauri para obter informações do sistema
       const systemInfo = await invoke<string>('get_system_info');
       return systemInfo;
@@ -13,6 +14,11 @@ export async function analyzeSystem(): Promise<string> {
     }
   } else {
     console.log('Tauri não está disponível, executando versão web.');
-    return 'Análise do sistema não implementada para versão web. Por favor, use o aplicativo Tauri.';
+    // Implementa uma análise básica para a versão web
+    const browserInfo = `Navegador: ${navigator.userAgent}\nMemória disponível (aproximada): ${
+      navigator.deviceMemory ? navigator.deviceMemory + ' GB' : 'Não disponível'
+    }`;
+
+    return `Análise básica do navegador:\n${browserInfo}\n\nPara uma análise completa, por favor, use o aplicativo Tauri.`;
   }
 }
