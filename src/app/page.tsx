@@ -15,24 +15,24 @@ export default function Home() {
       <h1 className="text-4xl font-bold mb-6 text-primary">Otimiza+</h1>
       <p className="text-muted-foreground mb-8">Otimize seu sistema para obter o máximo de desempenho.</p>
 
-      <Tabs defaultValue="analysis" className="w-full max-w-3xl">
+      <Tabs defaultValue="analise" className="w-full max-w-3xl">
         <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="analysis">Análise do Sistema</TabsTrigger>
-          <TabsTrigger value="recommendations">Recomendações</TabsTrigger>
-          <TabsTrigger value="optimization">Otimização Automática</TabsTrigger>
+          <TabsTrigger value="analise">Análise do Sistema</TabsTrigger>
+          <TabsTrigger value="recomendações">Recomendações</TabsTrigger>
+          <TabsTrigger value="otimização">Otimização Automática</TabsTrigger>
         </TabsList>
-        <TabsContent value="analysis" className="mt-6">
+        <TabsContent value="analise" className="mt-6">
           <Card>
             <CardHeader>
               <CardTitle>Análise do Sistema</CardTitle>
               <CardDescription>Verifique seu sistema em busca de possíveis problemas.</CardDescription>
             </CardHeader>
             <CardContent>
-              <SystemAnalysis onAnalysisComplete={() => router.push('/recommendations')} />
+              <SystemAnalysis/>
             </CardContent>
           </Card>
         </TabsContent>
-        <TabsContent value="recommendations" className="mt-6">
+        <TabsContent value="recomendações" className="mt-6">
           <Card>
             <CardHeader>
               <CardTitle>Recomendações de Otimização</CardTitle>
@@ -43,7 +43,7 @@ export default function Home() {
             </CardContent>
           </Card>
         </TabsContent>
-        <TabsContent value="optimization" className="mt-6">
+        <TabsContent value="otimização" className="mt-6">
           <Card>
             <CardHeader>
               <CardTitle>Otimização Automatizada</CardTitle>
@@ -58,3 +58,5 @@ export default function Home() {
     </div>
   );
 }
+
+    
