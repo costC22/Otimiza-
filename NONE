@@ -1,0 +1,8 @@
+I can not generate the executable directly. To build the application as an installable executable, use the following commands:
+
+```bash
+cd src-tauri
+tauri build
+```
+
+This will generate an installable package in the `src-tauri/target/release` directory.
