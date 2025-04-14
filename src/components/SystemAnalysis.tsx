@@ -26,7 +26,7 @@ const SystemAnalysis = ({ onAnalysisComplete }: SystemAnalysisProps) => {
             });
             onAnalysisComplete();
         } catch (error: any) {
-            console.error("System analysis error:", error);
+            console.error("Erro na análise do sistema:", error);
             setAnalysisResult(null);
             setAnalysisError(error.message || "Falha ao analisar o sistema.");
             toast({

@@ -21,7 +21,7 @@ const AutomatedOptimization = () => {
           description: result,
         });
       } catch (error: any) {
-        console.error("Optimization error:", error);
+        console.error("Erro de otimização:", error);
         setOptimizationResult(null);
         setOptimizationError(error.message || "Ocorreu um erro durante a otimização.");
         toast({
