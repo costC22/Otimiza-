@@ -1,5 +1,3 @@
-'use client';
-
 import './globals.css';
 import {Sidebar, SidebarContent, SidebarMenu, SidebarMenuItem, SidebarProvider} from "@/components/ui/sidebar";
 
@@ -48,3 +46,4 @@ const RootLayout = ({
 }
 
 export default RootLayout;
+

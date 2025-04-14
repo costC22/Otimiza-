@@ -6,9 +6,16 @@ export function useTauri() {
   const [tauri, setTauri] = useState<typeof import('@tauri-apps/api') | null>(null);
 
   useEffect(() => {
-    if (typeof window !== 'undefined' && window.__TAURI__) {
+    if (typeof window !== 'undefined' && (window as any).__TAURI__) {
       // tauri is available
-      setTauri(window.__TAURI__);
+      import('@tauri-apps/api')
+        .then((tauriApi) => {
+          setTauri(tauriApi);
+        })
+        .catch(err => {
+          console.error('Failed to load Tauri API:', err);
+          setTauri(null);
+        });
     } else {
       console.warn('Tauri API not available.');
       setTauri(null);
@@ -17,3 +24,4 @@ export function useTauri() {
 
   return tauri;
 }
+
