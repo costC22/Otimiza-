@@ -77,9 +77,13 @@ const SystemInformation = () => {
       
       
         Sistema Operacional: {systemInfo.os}
+        
         Navegador: {systemInfo.browser}
+        
         CPU: {systemInfo.cpu}
+        
         Memória: {systemInfo.memory}
+        
       
     
   );
