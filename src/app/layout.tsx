@@ -1,8 +1,9 @@
+'use client';
+
 import './globals.css';
 import { Geist } from 'next/font/google';
 import { ListChecks, Rocket, Settings } from 'lucide-react';
 import { Sidebar, SidebarContent, SidebarMenu, SidebarMenuItem, SidebarProvider } from "@/components/ui/sidebar";
-import { SystemInformation } from "@/components/SystemInformation";
 import {metadata} from './metadata';
 import React from "react";
 
@@ -43,8 +44,6 @@ const ClientSideSidebar = ({ children }: { children: React.ReactNode }) => {
             
           
           
-            <SystemInformation />
-          
         </SidebarContent>
       </Sidebar>
       {children}
@@ -74,3 +73,4 @@ const RootLayout = ({
 }
 
 export default RootLayout;
+
