@@ -5,16 +5,12 @@ import { Geist } from 'next/font/google';
 import { Home, ListChecks, Rocket, System } from 'lucide-react';
 import { Sidebar, SidebarContent, SidebarMenu, SidebarMenuItem, SidebarProvider } from "@/components/ui/sidebar";
 import { useState, useEffect } from 'react';
+import {metadata} from './metadata';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
   subsets: ['latin'],
 });
-
-export const metadata = {
-  title: 'Otimiza+ - System Optimizer',
-  description: 'Optimize your system for peak performance.',
-};
 
 interface SystemInfo {
   os: string;
@@ -71,25 +67,27 @@ const SystemInformation = () => {
   }, []);
 
   return (
-    
-      
-        Informações do Sistema
-      
-      
-        
-          Sistema Operacional: {systemInfo.os}
-        
-        
-          Navegador: {systemInfo.browser}
-        
-        
-          CPU: {systemInfo.cpu}
-        
-        
-          Memória: {systemInfo.memory}
-        
-      
-    
+    <>
+      <div>
+        <div>
+          Informações do Sistema
+        </div>
+        <div>
+          
+            Sistema Operacional: {systemInfo.os}
+          
+          
+            Navegador: {systemInfo.browser}
+          
+          
+            CPU: {systemInfo.cpu}
+          
+          
+            Memória: {systemInfo.memory}
+          
+        </div>
+      </div>
+    </>
   );
 };
 
@@ -155,5 +153,3 @@ const RootLayout = ({
 }
 
 export default RootLayout;
-
-    

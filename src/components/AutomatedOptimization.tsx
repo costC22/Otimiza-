@@ -5,6 +5,7 @@ import {toast} from "@/hooks/use-toast";
 import {runOptimization} from "@/services/system-optimization";
 import {useState, useTransition, useEffect, useCallback} from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useTauri } from "@/hooks/use-tauri";
 
 const AutomatedOptimization = () => {
   const [isPending, startTransition] = useTransition();
@@ -12,11 +13,13 @@ const AutomatedOptimization = () => {
   const [optimizationError, setOptimizationError] = useState<string | null>(null);
   const [selectedVolume, setSelectedVolume] = useState<string | null>(null);
   const [volumes, setVolumes] = useState<string[]>([]);
+	const tauri = useTauri();
+
 
   const fetchVolumes = useCallback(async () => {
-    if (typeof window !== 'undefined' && window.__TAURI__) {
+    if (tauri) {
       try {
-        const { invoke } = await import('@tauri-apps/api/tauri');
+        const { invoke } = tauri;
         const output = await invoke<string>('get_system_info');
         const volumes = ['C', 'D'];
         setVolumes(volumes);
@@ -32,7 +35,7 @@ const AutomatedOptimization = () => {
       console.warn("Tauri não detectado. Usando volumes padrão.");
       setVolumes(['C', 'D']);
     }
-  }, []);
+  }, [tauri]);
 
   useEffect(() => {
     fetchVolumes();
@@ -42,12 +45,12 @@ const AutomatedOptimization = () => {
     startTransition(async () => {
       try {
         let result: string;
-        if (typeof window !== 'undefined' && window.__TAURI__) {
-          const { invoke } = await import('@tauri-apps/api/tauri');
-          result = await invoke<string>('run_defrag', { volume: selectedVolume || 'C' });
-        } else {
-          result = await runOptimization(selectedVolume || undefined);
-        }
+				if(tauri){
+					const { invoke } = tauri;
+					result = await invoke<string>('run_defrag', { volume: selectedVolume || 'C' });
+				}else{
+					result = await runOptimization(selectedVolume || undefined);
+				}
         setOptimizationResult(result);
         setOptimizationError(null);
         toast({
@@ -70,7 +73,7 @@ const AutomatedOptimization = () => {
   return (
     
       
-        Execute scripts automatizados para limpar arquivos temporários, desativar programas de inicialização
+        Realizar a limpeza de arquivos temporários, desativar programas de inicialização
         desnecessários e otimizar as configurações do sistema.
       
 
