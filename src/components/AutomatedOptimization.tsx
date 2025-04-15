@@ -2,10 +2,10 @@
 
 import {Button} from "@/components/ui/button";
 import {toast} from "@/hooks/use-toast";
-import {runOptimization} from "@/services/system-optimization";
 import {useState, useTransition, useEffect, useCallback} from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useTauri } from "@/hooks/use-tauri";
+import {getAvailableVolumes} from "@/ai/flows/get-available-volumes-flow";
 
 const AutomatedOptimization = () => {
   const [isPending, startTransition] = useTransition();
@@ -17,23 +17,25 @@ const AutomatedOptimization = () => {
 
 
   const fetchVolumes = useCallback(async () => {
-    if (tauri) {
-      try {
-        const { invoke } = tauri;
-        const output = await invoke<string>('get_system_info');
-        const volumes = ['C', 'D'];
-        setVolumes(volumes);
-      } catch (error) {
-        console.error("Falha ao carregar volumes:", error);
+    try {
+        const result = await getAvailableVolumes();
+        if (result && result.volumes) {
+            setVolumes(result.volumes);
+        } else {
+            console.warn("No volumes were found");
+            toast({
+                title: "Erro ao carregar volumes",
+                description: "Não foi possível carregar a lista de volumes.",
+                variant: "destructive",
+            });
+        }
+    } catch (error) {
+        console.error("Failed to load volumes", error);
         toast({
-          title: "Falha ao carregar volumes",
-          description: "Não foi possível carregar a lista de volumes.",
-          variant: "destructive",
+            title: "Erro ao carregar volumes",
+            description: "Não foi possível carregar a lista de volumes.",
+            variant: "destructive",
         });
-      }
-    } else {
-      console.warn("Tauri não detectado. Usando volumes padrão.");
-      setVolumes(['C', 'D']);
     }
   }, [tauri]);
 
@@ -49,7 +51,7 @@ const AutomatedOptimization = () => {
 					const { invoke } = tauri;
 					result = await invoke<string>('run_defrag', { volume: selectedVolume || 'C' });
 				}else{
-					result = await runOptimization(selectedVolume || undefined);
+					result = "Otimização não disponível no navegador.";
 				}
         setOptimizationResult(result);
         setOptimizationError(null);
@@ -120,3 +122,4 @@ const AutomatedOptimization = () => {
 };
 
 export default AutomatedOptimization;
+
