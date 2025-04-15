@@ -20,18 +20,10 @@ export const SystemInformation = () => {
   useEffect(() => {
     const getSystemInfo = async () => {
       if (typeof window !== 'undefined') {
-        let osInfo = 'N/A';
-        let cpuInfo = 'N/A';
+        let osInfo = navigator.platform || 'N/A';
+        let cpuInfo = 'Informação indisponível no navegador';
         let memoryInfo = 'N/A';
-        let browserInfo = 'N/A';
-
-        if (navigator.userAgent) {
-          browserInfo = navigator.userAgent;
-        }
-
-        if (navigator.platform) {
-          osInfo = navigator.platform;
-        }
+        let browserInfo = navigator.userAgent || 'N/A';
 
         if ('deviceMemory' in navigator) {
           memoryInfo = `${(navigator as any).deviceMemory} GB`;
@@ -51,7 +43,7 @@ export const SystemInformation = () => {
 
   return (
     <>
-      <p>Informações do Sistema</p>
+      <h1>Informações do Sistema</h1>
       <ul>
         <li>
           <strong>Sistema Operacional:</strong> {systemInfo.os}

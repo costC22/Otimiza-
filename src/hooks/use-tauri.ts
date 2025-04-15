@@ -9,7 +9,7 @@ export function useTauri() {
     if (typeof window !== 'undefined' && (window as any).__TAURI__) {
       // tauri is available
       import('@tauri-apps/api')
-        .then((tauriApi) => {
+        .then((tauriApi: any) => {
           setTauri(tauriApi);
         })
         .catch(err => {
