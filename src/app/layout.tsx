@@ -1,5 +1,22 @@
+'use client';
+
 import './globals.css';
 import {Sidebar, SidebarContent, SidebarMenu, SidebarMenuItem, SidebarProvider} from "@/components/ui/sidebar";
+import { Geist } from 'next/font/google';
+import ClientLayout from "@/components/ClientLayout";
+
+const geistSans = Geist({
+  variable: '--font-geist-sans',
+  subsets: ['latin'],
+});
+
+export const metadata = {
+  title: 'Otimiza+ - System Optimizer',
+  description: 'Optimize your system for peak performance.',
+};
+
+import {useEffect, useState} from "react";
+import { Home, ListChecks, Rocket, System } from 'lucide-react';
 
 const RootLayout = ({
   children,
@@ -7,43 +24,44 @@ const RootLayout = ({
   children: React.ReactNode;
 }>) => {
   return (
-    <html lang="pt-BR">
-    <body>
-    <SidebarProvider>
-      <Sidebar>
-        <SidebarContent>
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <a href="/" className="flex items-center space-x-2">
-                <span>Início</span>
-              </a>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <a href="/" className="flex items-center space-x-2">
-                <span>Análise do Sistema</span>
-              </a>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <a href="/recommendations" className="flex items-center space-x-2">
-                <span>Recomendações</span>
-              </a>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <a href="/optimization" className="flex items-center space-x-2">
-                <span>Otimização Automática</span>
-              </a>
-            </SidebarMenuItem>
-          </SidebarMenu>
-        </SidebarContent>
-      </Sidebar>
-      <main className="main-content" style={{ marginLeft: '200px', padding: '20px' }}>
+    
+      
+        
+          
+            
+              <SidebarMenuItem href="/">
+                <Home className="mr-2 h-4 w-4" />
+                Início
+              </SidebarMenuItem>
+            
+            
+              <SidebarMenuItem href="/system-analysis">
+                <System className="mr-2 h-4 w-4" />
+                Análise do Sistema
+              </SidebarMenuItem>
+            
+            
+              <SidebarMenuItem href="/recommendations">
+                <ListChecks className="mr-2 h-4 w-4" />
+                Recomendações
+              </SidebarMenuItem>
+            
+            
+              <SidebarMenuItem href="/auto-optimize">
+                <Rocket className="mr-2 h-4 w-4" />
+                Otimização Automática
+              </SidebarMenuItem>
+            
+          
+        
+      
+      
         {children}
-      </main>
-    </SidebarProvider>
-    </body>
-    </html>
+        
+        
+      
+    
   );
 }
 
 export default RootLayout;
-

@@ -68,47 +68,51 @@ const AutomatedOptimization = () => {
   };
 
   return (
-    <div className="flex flex-col space-y-4">
-      <p className="text-muted-foreground">
+    
+      
         Execute scripts automatizados para limpar arquivos temporários, desativar programas de inicialização
         desnecessários e otimizar as configurações do sistema.
-      </p>
+      
 
       {/* Volume selection */}
       {volumes.length > 0 && (
-        <div>
-          <p className="text-sm font-medium leading-none">Selecione o Volume para Desfragmentar:</p>
-          <Select onValueChange={setSelectedVolume}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Selecionar Volume" />
-            </SelectTrigger>
-            <SelectContent>
+        
+          
+            Selecione o Volume para Desfragmentar:
+          
+          
+            
+              
+                Selecionar Volume
+              
+            
+            
               {volumes.map((volume) => (
-                <SelectItem key={volume} value={volume}>
+                
                   {volume}
-                </SelectItem>
+                
               ))}
-            </SelectContent>
-          </Select>
-        </div>
+            
+          
+        
       )}
 
-      <Button disabled={isPending} onClick={handleOptimization}>
+      
         {isPending ? "Otimizando..." : "Executar Otimização Automática"}
-      </Button>
+      
 
       {optimizationResult && (
-        <div className="text-green-500">
+        
           Resultado: {optimizationResult}
-        </div>
+        
       )}
 
       {optimizationError && (
-        <div className="text-red-500">
+        
           Erro: {optimizationError}
-        </div>
+        
       )}
-    </div>
+    
   );
 };
 

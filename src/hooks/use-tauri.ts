@@ -3,7 +3,7 @@
 import {useEffect, useState} from 'react';
 
 export function useTauri() {
-  const [tauri, setTauri] = useState<typeof import('@tauri-apps/api') | null>(null);
+  const [tauri, setTauri] = useState<any>(null);
 
   useEffect(() => {
     if (typeof window !== 'undefined' && (window as any).__TAURI__) {
@@ -24,4 +24,3 @@ export function useTauri() {
 
   return tauri;
 }
-
