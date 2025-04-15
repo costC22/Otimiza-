@@ -6,6 +6,7 @@ import {useState, useTransition, useEffect, useCallback} from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useTauri } from "@/hooks/use-tauri";
 import {getAvailableVolumes} from "@/ai/flows/get-available-volumes-flow";
+import {runOptimization} from "@/services/system-optimization";
 
 const AutomatedOptimization = () => {
   const [isPending, startTransition] = useTransition();
@@ -47,9 +48,8 @@ const AutomatedOptimization = () => {
     startTransition(async () => {
       try {
         let result: string;
-				if(tauri){
-					const { invoke } = tauri;
-					result = await invoke<string>('run_defrag', { volume: selectedVolume || 'C' });
+				if(tauri && selectedVolume){
+          result = await runOptimization(selectedVolume);
 				}else{
 					result = "Otimização não disponível no navegador.";
 				}
