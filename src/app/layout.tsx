@@ -76,13 +76,17 @@ const SystemInformation = () => {
         Informações do Sistema
       
       
-        Sistema Operacional: {systemInfo.os}
         
-        Navegador: {systemInfo.browser}
+          Sistema Operacional: {systemInfo.os}
         
-        CPU: {systemInfo.cpu}
         
-        Memória: {systemInfo.memory}
+          Navegador: {systemInfo.browser}
+        
+        
+          CPU: {systemInfo.cpu}
+        
+        
+          Memória: {systemInfo.memory}
         
       
     
@@ -151,3 +155,5 @@ const RootLayout = ({
 }
 
 export default RootLayout;
+
+    
