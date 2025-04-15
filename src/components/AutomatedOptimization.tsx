@@ -1,10 +1,10 @@
 'use client';
 
-import {Button} from "@/components/ui/button";
-import {toast} from "@/hooks/use-toast";
-import {useState, useTransition, useEffect, useCallback} from "react";
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
-import {getSystemOptimizationRecommendation} from "@/ai/flows/system-optimization-recommendation-flow";
+import { Button } from "@/components/ui/button";
+import { toast } from "@/hooks/use-toast";
+import { useState, useTransition, useEffect, useCallback } from "react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { getSystemOptimizationRecommendation } from "@/ai/flows/system-optimization-recommendation-flow";
 
 const AutomatedOptimization = () => {
     const [isPending, startTransition] = useTransition();
@@ -12,14 +12,16 @@ const AutomatedOptimization = () => {
     const [availableVolumes, setAvailableVolumes] = useState<string[]>([]);
     const [isTauri, setIsTauri] = useState(false);
 
+    // Verifica se o ambiente é Tauri na inicialização
     useEffect(() => {
-        setIsTauri(typeof window !== 'undefined' && (window as any).__TAURI__ !== undefined);
+        setIsTauri(typeof window !== 'undefined' && !!(window as any).__TAURI__);
     }, []);
 
+    // Função para buscar volumes disponíveis
     const fetchVolumes = useCallback(async () => {
         if (isTauri) {
             try {
-                const {invoke} = await import('@tauri-apps/api/tauri');
+                const { invoke } = await import('@tauri-apps/api/tauri');
                 const volumes = await invoke<string[]>('get_available_volumes');
                 setAvailableVolumes(volumes);
             } catch (error) {
@@ -36,10 +38,12 @@ const AutomatedOptimization = () => {
         }
     }, [isTauri]);
 
+    // Busca volumes disponíveis ao carregar o componente
     useEffect(() => {
         fetchVolumes();
     }, [fetchVolumes]);
 
+    // Função para executar a otimização
     const handleOptimization = async () => {
         if (!selectedVolume) {
             toast({
@@ -76,7 +80,7 @@ const AutomatedOptimization = () => {
 
             <Select onValueChange={setSelectedVolume} disabled={!isTauri}>
                 <SelectTrigger>
-                    <SelectValue placeholder="Selecionar Volume"/>
+                    <SelectValue placeholder="Selecionar Volume" />
                 </SelectTrigger>
                 <SelectContent>
                     {availableVolumes.map((volume) => (
@@ -87,7 +91,7 @@ const AutomatedOptimization = () => {
                 </SelectContent>
             </Select>
 
-            <Button onClick={handleOptimization} disabled={isPending || !selectedVolume}>
+            <Button onClick={handleOptimization} disabled={isPending || !selectedVolume || !isTauri}>
                 {isPending ? "Otimizando..." : "Executar Otimização Automática"}
             </Button>
             {!isTauri && (
@@ -101,23 +105,27 @@ const AutomatedOptimization = () => {
 
 export default AutomatedOptimization;
 
+// Função para executar a otimização do sistema
 async function runOptimization(volume?: string): Promise<string> {
     try {
-        // Call Genkit flow to get optimization recommendation
+        // Obter recomendações de otimização
         const recommendation = await getSystemOptimizationRecommendation();
 
         let resultMessage = recommendation.recommendation;
 
+        // Executar ações específicas do Tauri
         if (typeof window !== 'undefined' && (window as any).__TAURI__) {
             try {
-                const {invoke} = await import('@tauri-apps/api/tauri');
+                const { invoke } = await import('@tauri-apps/api/tauri');
                 if (volume) {
-                    const defragResult = await invoke<string>('disk_defrag', {volume});
+                    const defragResult = await invoke<string>('disk_defrag', { volume });
                     resultMessage += `\nResultado da desfragmentação do disco: ${defragResult}`;
                 }
             } catch (defragError: any) {
                 console.error("Erro durante a desfragmentação do disco:", defragError);
-                resultMessage += `\nErro durante a desfragmentação do disco: ${defragError.message || "Desfragmentação do disco falhou."}`;
+                resultMessage += `\nErro durante a desfragmentação do disco: ${
+                    defragError.message || "Desfragmentação do disco falhou."
+                }`;
             }
         } else {
             resultMessage += `\nDesfragmentação do disco ignorada. Executando em ambiente web.`;
