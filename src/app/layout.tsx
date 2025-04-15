@@ -1,6 +1,6 @@
 import './globals.css';
 import { Geist } from 'next/font/google';
-import { Home, ListChecks, Rocket, Settings } from 'lucide-react';
+import { ListChecks, Rocket, Settings } from 'lucide-react';
 import { Sidebar, SidebarContent, SidebarMenu, SidebarMenuItem, SidebarProvider } from "@/components/ui/sidebar";
 import { SystemInformation } from "@/components/SystemInformation";
 import {metadata} from './metadata';
@@ -19,8 +19,8 @@ const ClientSideSidebar = ({ children }: { children: React.ReactNode }) => {
           
             
               <SidebarMenuItem href="/">
-                <Home className="mr-2 h-4 w-4" />
-                Início
+                <Settings className="mr-2 h-4 w-4" />
+                Painel de Controle
               </SidebarMenuItem>
             
             
@@ -58,8 +58,8 @@ const RootLayout = ({
   children: React.ReactNode;
 }>) => {
   return (
-    
-      
+    <html lang="pt-BR">
+      <body className={geistSans.className}>
         
           <ClientSideSidebar>
             
@@ -68,7 +68,8 @@ const RootLayout = ({
           </ClientSideSidebar>
         
       
-    
+      </body>
+    </html>
   );
 }
 
