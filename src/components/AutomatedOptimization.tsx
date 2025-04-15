@@ -2,67 +2,56 @@
 
 import {Button} from "@/components/ui/button";
 import {toast} from "@/hooks/use-toast";
-import {useState, useTransition, useEffect, useCallback} from "react";
+import {useState, useTransition, useEffect} from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useTauri } from "@/hooks/use-tauri";
-import {getAvailableVolumes} from "@/ai/flows/get-available-volumes-flow";
-import {runOptimization} from "@/services/system-optimization";
+import { invoke } from '@tauri-apps/api/tauri';
 
 const AutomatedOptimization = () => {
   const [isPending, startTransition] = useTransition();
   const [optimizationResult, setOptimizationResult] = useState<string | null>(null);
   const [optimizationError, setOptimizationError] = useState<string | null>(null);
-  const [selectedVolume, setSelectedVolume] = useState<string | null>(null);
   const [volumes, setVolumes] = useState<string[]>([]);
-	const tauri = useTauri();
-
-
-  const fetchVolumes = useCallback(async () => {
-    try {
-        const result = await getAvailableVolumes();
-        if (result && result.volumes) {
-            setVolumes(result.volumes);
-        } else {
-            console.warn("Nenhum volume foi encontrado");
-            toast({
-                title: "Erro ao carregar volumes",
-                description: "Não foi possível carregar a lista de volumes.",
-                variant: "destructive",
-            });
-        }
-    } catch (error) {
-        console.error("Falha ao carregar volumes", error);
-        toast({
-            title: "Erro ao carregar volumes",
-            description: "Não foi possível carregar a lista de volumes.",
-            variant: "destructive",
-        });
-    }
-  }, [tauri]);
+  const [selectedVolume, setSelectedVolume] = useState<string | null>(null);
 
   useEffect(() => {
+    const fetchVolumes = async () => {
+      try {
+        const result = await invoke('get_available_volumes');
+        if (result && typeof result === 'object' && result.volumes) {
+          setVolumes(result.volumes);
+        } else {
+          console.error('Failed to fetch available volumes:', result);
+        }
+      } catch (error) {
+        console.error('Failed to fetch available volumes:', error);
+      }
+    };
+
     fetchVolumes();
-  }, [fetchVolumes]);
+  }, []);
 
   const handleOptimization = async () => {
     startTransition(async () => {
       try {
-        let result: string;
-				if(tauri && selectedVolume){
-          result = await runOptimization(selectedVolume);
-				}else{
-					result = "Otimização não disponível no navegador.";
-				}
-        setOptimizationResult(result);
+        if (!selectedVolume) {
+          toast({
+            title: "Erro",
+            description: "Por favor, selecione um volume para otimizar.",
+            variant: "destructive",
+          });
+          return;
+        }
+
+        const result = await invoke('disk_defrag', { volume: selectedVolume });
+        setOptimizationResult(`Otimização concluída com sucesso no volume ${selectedVolume}! ${result}`);
         setOptimizationError(null);
         toast({
           title: "Otimização Concluída",
-          description: result,
+          description: `Otimização concluída com sucesso no volume ${selectedVolume}!`,
         });
       } catch (error: any) {
-        console.error("Erro de otimização:", error);
         setOptimizationResult(null);
-        setOptimizationError(error.message || "Ocorreu um erro durante a otimização.");
+        setOptimizationError(`Ocorreu um erro durante a otimização: ${error.message}`);
         toast({
           title: "Falha na Otimização",
           description: error.message || "Ocorreu um erro durante a otimização.",
@@ -79,29 +68,24 @@ const AutomatedOptimization = () => {
         desnecessários e otimizar as configurações do sistema.
       
 
-      {/* Volume selection */}
-      {volumes.length > 0 && (
-        
-          
-            Selecione o Volume para Desfragmentar:
-          
-          
-            
+       {
+            volumes.length > 0 ? (
               
-                Selecionar Volume
+                
+                  Selecione o Volume:
+                
+                
+                  {volumes.map((volume) => (
+                     setSelectedVolume(volume)}>{volume}
+                  ))}
+                
               
-            
-            
-              {volumes.map((volume) => (
-                
-                  {volume}
-                
-              ))}
-            
-          
-        
-      )}
-
+            ) : (
+              
+                Carregando volumes disponíveis...
+              
+            )
+          }
       
         {isPending ? "Otimizando..." : "Executar Otimização Automática"}
       
