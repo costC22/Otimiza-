@@ -42,3 +42,4 @@ const AutomatedOptimization = () => {
 };
 
 export default AutomatedOptimization;
+
