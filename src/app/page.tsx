@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { useEffect, useState } from 'react';
 import { toast } from '@/hooks/use-toast';
 import { useTauri } from '@/hooks/use-tauri';
+import { Settings } from 'lucide-react';
 
 export default function Home() {
   const router = useRouter();

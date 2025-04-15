@@ -3,13 +3,8 @@
 import {Button} from "@/components/ui/button";
 import {toast} from "@/hooks/use-toast";
 import {useState, useCallback} from "react";
-import {analyzeSystem} from "@/services/system-analysis";
 
-interface SystemAnalysisProps {
-    onAnalysisComplete: () => void;
-}
-
-const SystemAnalysis = ({ onAnalysisComplete }: SystemAnalysisProps) => {
+const SystemAnalysis = () => {
     const [analysisResult, setAnalysisResult] = useState<string | null>(null);
     const [analysisError, setAnalysisError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -17,14 +12,27 @@ const SystemAnalysis = ({ onAnalysisComplete }: SystemAnalysisProps) => {
     const handleSystemScan = useCallback(async () => {
         setIsLoading(true);
         try {
-            const recommendation = await analyzeSystem();
-            setAnalysisResult(recommendation);
+            let systemInfo = '';
+
+            if (typeof window !== 'undefined' && (window as any).__TAURI__) {
+                try {
+                    const {invoke} = await import('@tauri-apps/api/tauri');
+                    systemInfo = await invoke<string>('get_system_info');
+                } catch (error: any) {
+                    console.error('Falha ao obter informações do sistema via Tauri:', error);
+                    systemInfo = `Falha ao obter informações do sistema: ${error.message || 'Erro desconhecido'}`;
+                }
+            } else {
+                console.log('Tauri não está disponível, executando versão web.');
+                systemInfo = `Análise do sistema não implementada para versão web. Por favor, use o aplicativo Tauri.`;
+            }
+
+            setAnalysisResult(systemInfo);
             setAnalysisError(null);
             toast({
                 title: "Análise do Sistema Concluída",
-                description: recommendation,
+                description: systemInfo,
             });
-            onAnalysisComplete();
         } catch (error: any) {
             console.error("Erro na análise do sistema:", error);
             setAnalysisResult(null);
@@ -37,7 +45,7 @@ const SystemAnalysis = ({ onAnalysisComplete }: SystemAnalysisProps) => {
         } finally {
             setIsLoading(false);
         }
-    }, [onAnalysisComplete]);
+    }, []);
 
     return (
         <div className="flex flex-col space-y-4">
@@ -51,7 +59,7 @@ const SystemAnalysis = ({ onAnalysisComplete }: SystemAnalysisProps) => {
 
             {analysisResult && (
                 <div className="text-green-500">
-                    Recomendação: {analysisResult}
+                    Resultado: {analysisResult}
                 </div>
             )}
 
