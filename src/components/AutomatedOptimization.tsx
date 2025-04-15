@@ -4,6 +4,7 @@ import {Button} from "@/components/ui/button";
 import {toast} from "@/hooks/use-toast";
 import {useState, useTransition, useEffect} from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {invoke} from "@tauri-apps/api/tauri";
 
 const AutomatedOptimization = () => {
   const [isPending, startTransition] = useTransition();
@@ -14,14 +15,13 @@ const AutomatedOptimization = () => {
         const fetchVolumes = async () => {
             if (typeof window !== 'undefined' && window.__TAURI__) {
                 try {
-                    const { invoke } = await import('@tauri-apps/api/tauri');
                     const volumes = await invoke<string[]>('get_available_volumes');
                     setAvailableVolumes(volumes);
                 } catch (error) {
                     console.error("Failed to fetch available volumes:", error);
                     toast({
-                        title: "Failed to fetch volumes",
-                        description: "Could not retrieve available volumes.",
+                        title: "Falha ao obter volumes",
+                        description: "Não foi possível recuperar os volumes disponíveis.",
                         variant: "destructive",
                     });
                 }
@@ -108,3 +108,4 @@ export async function runOptimization(volume?: string): Promise<string> {
     }
 }
 '
+
