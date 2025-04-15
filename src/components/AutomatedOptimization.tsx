@@ -64,7 +64,7 @@ const AutomatedOptimization = () => {
   return (
     
       
-        Realizar a limpeza de arquivos temporários, desativar programas de inicialização
+        Executar scripts automatizados para limpar arquivos temporários, desativar programas de inicialização
         desnecessários e otimizar as configurações do sistema.
       
 
