@@ -1,6 +1,6 @@
 import './globals.css';
 import { Geist } from 'next/font/google';
-import { Home, ListChecks, Rocket, System } from 'lucide-react';
+import { Home, ListChecks, Rocket, Settings } from 'lucide-react';
 import { Sidebar, SidebarContent, SidebarMenu, SidebarMenuItem, SidebarProvider } from "@/components/ui/sidebar";
 import { SystemInformation } from "@/components/SystemInformation";
 import {metadata} from './metadata';
@@ -25,7 +25,7 @@ const ClientSideSidebar = ({ children }: { children: React.ReactNode }) => {
             
             
               <SidebarMenuItem href="/system-analysis">
-                <System className="mr-2 h-4 w-4" />
+                <Settings className="mr-2 h-4 w-4" />
                 Análise do Sistema
               </SidebarMenuItem>
             
