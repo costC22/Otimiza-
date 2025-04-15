@@ -1,8 +1,8 @@
 'use client';
 
-import {Button} from "@/components/ui/button";
-import {toast} from "@/hooks/use-toast";
-import {useState, useTransition, useEffect} from "react";
+import { Button } from "@/components/ui/button";
+import { toast } from "@/hooks/use-toast";
+import { useState, useTransition, useEffect } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { invoke } from '@tauri-apps/api/tauri';
 

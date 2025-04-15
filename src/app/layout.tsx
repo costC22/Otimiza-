@@ -1,95 +1,15 @@
-'use client';
-
 import './globals.css';
 import { Geist } from 'next/font/google';
 import { Home, ListChecks, Rocket, System } from 'lucide-react';
 import { Sidebar, SidebarContent, SidebarMenu, SidebarMenuItem, SidebarProvider } from "@/components/ui/sidebar";
-import { useState, useEffect } from 'react';
+import { SystemInformation } from "@/components/SystemInformation";
 import {metadata} from './metadata';
+import React from "react";
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
   subsets: ['latin'],
 });
-
-interface SystemInfo {
-  os: string;
-  cpu: string;
-  memory: string;
-  browser: string;
-}
-
-const SystemInformation = () => {
-  const [systemInfo, setSystemInfo] = useState<SystemInfo>({
-    os: 'N/A',
-    cpu: 'N/A',
-    memory: 'N/A',
-    browser: 'N/A',
-  });
-
-  useEffect(() => {
-    const getSystemInfo = async () => {
-      if (typeof window !== 'undefined') {
-        let osInfo = 'N/A';
-        let cpuInfo = 'N/A';
-        let memoryInfo = 'N/A';
-        let browserInfo = 'N/A';
-
-        if (navigator.userAgent) {
-          browserInfo = navigator.userAgent;
-        }
-
-        if (navigator.platform) {
-          osInfo = navigator.platform;
-        }
-
-        if (navigator.deviceMemory) {
-          memoryInfo = `${navigator.deviceMemory} GB`;
-        }
-
-        setSystemInfo({
-          os: osInfo,
-          cpu: cpuInfo,
-          memory: memoryInfo,
-          browser: browserInfo,
-        });
-      } else {
-        setSystemInfo({
-          os: 'N/A',
-          cpu: 'N/A',
-          memory: 'N/A',
-          browser: 'N/A',
-        });
-      }
-    };
-
-    getSystemInfo();
-  }, []);
-
-  return (
-    <>
-      <div>
-        <div>
-          Informações do Sistema
-        </div>
-        <div>
-          
-            Sistema Operacional: {systemInfo.os}
-          
-          
-            Navegador: {systemInfo.browser}
-          
-          
-            CPU: {systemInfo.cpu}
-          
-          
-            Memória: {systemInfo.memory}
-          
-        </div>
-      </div>
-    </>
-  );
-};
 
 const ClientSideSidebar = ({ children }: { children: React.ReactNode }) => {
   return (
