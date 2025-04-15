@@ -1,9 +1,10 @@
 'use client';
 
 import './globals.css';
-import {Sidebar, SidebarContent, SidebarMenu, SidebarMenuItem, SidebarProvider} from "@/components/ui/sidebar";
 import { Geist } from 'next/font/google';
-import ClientLayout from "@/components/ClientLayout";
+import { Home, ListChecks, Rocket, System } from 'lucide-react';
+import { Sidebar, SidebarContent, SidebarMenu, SidebarMenuItem, SidebarProvider } from "@/components/ui/sidebar";
+import { useState, useEffect } from 'react';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -15,18 +16,80 @@ export const metadata = {
   description: 'Optimize your system for peak performance.',
 };
 
-import {useEffect, useState} from "react";
-import { Home, ListChecks, Rocket, System } from 'lucide-react';
+interface SystemInfo {
+  os: string;
+  cpu: string;
+  memory: string;
+  browser: string;
+}
 
-const RootLayout = ({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) => {
+const SystemInformation = () => {
+  const [systemInfo, setSystemInfo] = useState<SystemInfo>({
+    os: 'N/A',
+    cpu: 'N/A',
+    memory: 'N/A',
+    browser: 'N/A',
+  });
+
+  useEffect(() => {
+    const getSystemInfo = async () => {
+      if (typeof window !== 'undefined') {
+        let osInfo = 'N/A';
+        let cpuInfo = 'N/A';
+        let memoryInfo = 'N/A';
+        let browserInfo = 'N/A';
+
+        if (navigator.userAgent) {
+          browserInfo = navigator.userAgent;
+        }
+
+        if (navigator.platform) {
+          osInfo = navigator.platform;
+        }
+
+        if (navigator.deviceMemory) {
+          memoryInfo = `${navigator.deviceMemory} GB`;
+        }
+
+        setSystemInfo({
+          os: osInfo,
+          cpu: cpuInfo,
+          memory: memoryInfo,
+          browser: browserInfo,
+        });
+      } else {
+        setSystemInfo({
+          os: 'N/A',
+          cpu: 'N/A',
+          memory: 'N/A',
+          browser: 'N/A',
+        });
+      }
+    };
+
+    getSystemInfo();
+  }, []);
+
   return (
     
       
-        
+        Informações do Sistema
+      
+      
+        Sistema Operacional: {systemInfo.os}
+        Navegador: {systemInfo.browser}
+        CPU: {systemInfo.cpu}
+        Memória: {systemInfo.memory}
+      
+    
+  );
+};
+
+const ClientSideSidebar = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <SidebarProvider>
+      <Sidebar>
+        <SidebarContent>
           
             
               <SidebarMenuItem href="/">
@@ -53,11 +116,30 @@ const RootLayout = ({
               </SidebarMenuItem>
             
           
-        
+          
+            <SystemInformation />
+          
+        </SidebarContent>
+      </Sidebar>
+      {children}
+    </SidebarProvider>
+  );
+};
+
+const RootLayout = ({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) => {
+  return (
+    
       
-      
-        {children}
         
+          <ClientSideSidebar>
+            
+              {children}
+            
+          </ClientSideSidebar>
         
       
     
