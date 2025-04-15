@@ -22,7 +22,7 @@ const AutomatedOptimization = () => {
         if (result && result.volumes) {
             setVolumes(result.volumes);
         } else {
-            console.warn("No volumes were found");
+            console.warn("Nenhum volume foi encontrado");
             toast({
                 title: "Erro ao carregar volumes",
                 description: "Não foi possível carregar a lista de volumes.",
@@ -30,7 +30,7 @@ const AutomatedOptimization = () => {
             });
         }
     } catch (error) {
-        console.error("Failed to load volumes", error);
+        console.error("Falha ao carregar volumes", error);
         toast({
             title: "Erro ao carregar volumes",
             description: "Não foi possível carregar a lista de volumes.",
@@ -122,4 +122,3 @@ const AutomatedOptimization = () => {
 };
 
 export default AutomatedOptimization;
-
