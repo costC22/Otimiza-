@@ -3,7 +3,7 @@
 export async function analyzeSystem(): Promise<string> {
     if (typeof window !== 'undefined' && window.__TAURI__) {
         try {
-            const { invoke } = await import('@tauri-apps/api');
+            const { invoke } = await import('@tauri-apps/api/tauri');
             // Call Tauri command to get system information
             const systemInfo = await invoke<string>('get_system_info');
             return `Análise do sistema via Tauri:\n${systemInfo}`;
@@ -13,9 +13,13 @@ export async function analyzeSystem(): Promise<string> {
         }
     } else {
         console.log('Tauri não está disponível, executando versão web.');
-        const browserInfo = `Navegador: ${navigator.userAgent}\nMemória disponível (aproximada): ${
-            navigator.deviceMemory ? navigator.deviceMemory + ' GB' : 'Não disponível'
-        }\nPlataforma: ${navigator.platform}`;
+        let browserInfo = 'Navegador: Não disponível\nMemória disponível (aproximada): Não disponível\nPlataforma: Não disponível';
+
+        if (typeof window !== 'undefined') {
+          browserInfo = `Navegador: ${navigator.userAgent}\nMemória disponível (aproximada): ${
+            (navigator as any).deviceMemory ? (navigator as any).deviceMemory + ' GB' : 'Não disponível'
+          }\nPlataforma: ${navigator.platform}`;
+        }
 
         return `Análise básica do navegador:\n${browserInfo}`;
     }
