@@ -18,7 +18,7 @@ const AutomatedOptimization = () => {
                     const volumes = await invoke<string[]>('get_available_volumes');
                     setAvailableVolumes(volumes);
                 } catch (error) {
-                    console.error("Failed to fetch available volumes:", error);
+                    console.error("Falha ao obter volumes", error);
                     toast({
                         title: "Falha ao obter volumes",
                         description: "Não foi possível recuperar os volumes disponíveis.",
